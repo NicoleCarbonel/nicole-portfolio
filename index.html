@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicole Carbonel — CPE Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'cyber': '#22d3ee',
+        'cyber-dim': '#0891b2',
+        'emerald-glow': '#34d399',
+        'slate-950': '#020617',
+      },
+      fontFamily: {
+        mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
+      },
+      animation: {
+        'blink': 'blink 1s step-end infinite',
+        'fade-in': 'fadeIn 0.6s ease forwards',
+        'slide-up': 'slideUp 0.5s ease forwards',
+      },
+      keyframes: {
+        blink: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0 } },
+        fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+        slideUp: { from: { opacity: 0, transform: 'translateY(20px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+      }
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+  /* Grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Glass card */
+  .glass {
+    background: rgba(15,23,42,0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34,211,238,0.12);
+  }
+
+  /* Cyber border glow */
+  .cyber-border {
+    border: 1px solid rgba(34,211,238,0.2);
+    box-shadow: 0 0 0 1px rgba(34,211,238,0.05) inset;
+  }
+
+  /* Terminal styles */
+  .terminal { font-family: 'JetBrains Mono', monospace; }
+
+  /* Skill badge */
+  .skill-badge {
+    background: rgba(34,211,238,0.08);
+    border: 1px solid rgba(34,211,238,0.18);
+    color: #94e8f5;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .skill-badge:hover {
+    background: rgba(34,211,238,0.15);
+    border-color: rgba(34,211,238,0.4);
+    color: #22d3ee;
+  }
+
+  .skill-badge-green {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.18);
+    color: #6ee7b7;
+  }
+  .skill-badge-green:hover {
+    background: rgba(52,211,153,0.15);
+    border-color: rgba(52,211,153,0.4);
+    color: #34d399;
+  }
+
+  .skill-badge-violet {
+    background: rgba(167,139,250,0.08);
+    border: 1px solid rgba(167,139,250,0.18);
+    color: #c4b5fd;
+  }
+  .skill-badge-violet:hover {
+    background: rgba(167,139,250,0.15);
+    border-color: rgba(167,139,250,0.4);
+    color: #a78bfa;
+  }
+
+  /* Project card */
+  .project-card {
+    background: rgba(15,23,42,0.8);
+    border: 1px solid rgba(34,211,238,0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .project-card:hover {
+    transform: scale(1.02);
+    border-color: rgba(34,211,238,0.35);
+    box-shadow: 0 0 24px rgba(34,211,238,0.1), 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  /* Nav */
+  .nav-link {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-link:hover { color: #22d3ee; }
+
+  /* Section label */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: #22d3ee;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Input / textarea */
+  .form-input {
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(34,211,238,0.15);
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    width: 100%;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: rgba(34,211,238,0.5); }
+  .form-input::placeholder { color: #475569; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #020617; }
+  ::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.3); border-radius: 4px; }
+
+  /* Mobile menu */
+  #mobile-menu { display: none; }
+  #mobile-menu.open { display: block; }
+
+  /* Animate on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* Tech tag */
+  .tech-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body class="grid-bg">
+
+<!-- NAVIGATION -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: rgba(2,6,23,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(34,211,238,0.08);">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="font-mono text-cyber font-bold text-sm tracking-widest">NC<span class="text-slate-500">.cpe</span></a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <div class="hidden md:flex items-center gap-3">
+      <a href="#contact" class="text-xs font-mono px-4 py-2 rounded-md font-semibold transition-all duration-200" style="border: 1px solid rgba(34,211,238,0.4); color: #22d3ee; background: rgba(34,211,238,0.06);" onmouseover="this.style.background='rgba(34,211,238,0.14)'" onmouseout="this.style.background='rgba(34,211,238,0.06)'">
+        hire me →
+      </a>
+    </div>
+
+    <!-- Hamburger -->
+    <button id="hamburger" class="md:hidden text-slate-400 hover:text-cyber transition-colors" onclick="toggleMenu()" aria-label="Open menu">
+      <svg id="ham-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="close-icon" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" style="border-top: 1px solid rgba(34,211,238,0.08); background: rgba(2,6,23,0.95);">
+    <div class="px-6 py-4 flex flex-col gap-4">
+      <a href="#about" class="nav-link text-base" onclick="toggleMenu()">About</a>
+      <a href="#skills" class="nav-link text-base" onclick="toggleMenu()">Skills</a>
+      <a href="#projects" class="nav-link text-base" onclick="toggleMenu()">Projects</a>
+      <a href="#contact" class="nav-link text-base" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section id="hero" class="min-h-screen flex items-center pt-16 relative overflow-hidden">
+  <!-- Glow orbs -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(34,211,238,0.07) 0%, transparent 70%); filter: blur(40px);"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(52,211,153,0.05) 0%, transparent 70%); filter: blur(40px);"></div>
+
+  <div class="max-w-6xl mx-auto px-6 py-24 w-full">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: text -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="section-label">// initializing</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full" style="background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: #34d399;">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+            available for work
+          </span>
+        </div>
+
+        <h1 class="text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white">
+          Nicole<br>
+          <span style="color: #22d3ee;">Carbonel</span>
+        </h1>
+
+        <p class="text-slate-400 text-lg leading-relaxed max-w-md">
+          3rd-year Computer Engineering student at <span class="text-slate-300 font-medium">PUP Manila</span> — bridging hardware intelligence with software systems and network infrastructure.
+        </p>
+
+        <div class="flex flex-wrap gap-3 text-xs font-mono">
+          <span class="skill-badge">Arduino / IoT</span>
+          <span class="skill-badge-green">Python / HTML / CSS</span>
+          <span class="skill-badge-violet">Cisco Networking</span>
+        </div>
+
+        <div class="flex gap-4 pt-2">
+          <a href="#projects" class="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200" style="background: #22d3ee; color: #020617;" onmouseover="this.style.background='#67e8f9'" onmouseout="this.style.background='#22d3ee'">
+            View Projects
+          </a>
+          <a href="#contact" class="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 nav-link" style="border: 1px solid rgba(34,211,238,0.25);" onmouseover="this.style.borderColor='rgba(34,211,238,0.5)'" onmouseout="this.style.borderColor='rgba(34,211,238,0.25)'">
+            Get in Touch
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Terminal -->
+      <div class="glass rounded-xl overflow-hidden">
+        <!-- Terminal title bar -->
+        <div class="flex items-center gap-2 px-4 py-3" style="background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(34,211,238,0.1);">
+          <span class="w-3 h-3 rounded-full" style="background: #ef4444; opacity: 0.7;"></span>
+          <span class="w-3 h-3 rounded-full" style="background: #f59e0b; opacity: 0.7;"></span>
+          <span class="w-3 h-3 rounded-full" style="background: #22c55e; opacity: 0.7;"></span>
+          <span class="ml-3 text-slate-500 text-xs font-mono">terminal — bash</span>
+        </div>
+        <!-- Terminal body -->
+        <div class="p-5 terminal text-sm min-h-72" id="terminal-body">
+          <div class="text-slate-500 text-xs mb-3">Last login: Sat Jun 7 08:42:13 2025</div>
+          <div id="terminal-lines"></div>
+          <div class="flex items-center gap-1 mt-1" id="terminal-prompt" style="display:none!important;">
+            <span class="text-emerald-400">guest@cpe-portfolio</span>
+            <span class="text-slate-500">:</span>
+            <span class="text-cyber">~</span>
+            <span class="text-slate-400">$</span>
+            <span class="animate-blink text-cyber ml-1">▌</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="py-24 relative">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal">
+      <span class="section-label">01 // about</span>
+      <h2 class="text-3xl font-bold text-white mt-3 mb-12">Who I Am</h2>s
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Bio -->
+      <div class="lg:col-span-2 glass rounded-xl p-8 reveal">
+        <div class="flex items-start gap-6">
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center font-mono font-bold text-xl" style="background: linear-gradient(135deg, rgba(34,211,238,0.2), rgba(52,211,153,0.2)); border: 1px solid rgba(34,211,238,0.25); color: #22d3ee;">NC</div>
+          <div>
+            <h3 class="text-white font-semibold text-lg">Nicole De Guzman Carbonel</h3>
+            <p class="text-slate-400 text-sm mt-0.5">BSCpE — Polytechnic University of the Philippines, Sta. Mesa</p>
+            <div class="flex gap-2 mt-2 flex-wrap">
+              <span class="tech-tag" style="background: rgba(34,211,238,0.1); color: #67e8f9; border: 1px solid rgba(34,211,238,0.2);">3rd Year</span>
+              <span class="tech-tag" style="background: rgba(52,211,153,0.1); color: #6ee7b7; border: 1px solid rgba(52,211,153,0.2);">Dean's Lister</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 space-y-4 text-slate-400 text-sm leading-relaxed">
+          <p>
+            I'm a Computer Engineering student at PUP Manila with a strong interest in systems where hardware and software meet — from microcontrollers sending data to cloud dashboards, to sensors driving real-world automation. My thesis, <span class="text-slate-200 font-medium">FAHRENCOOL</span>, is an IoT-enabled cryotherapy and thermotherapy system built around an Arduino, Peltier modules, PID control, and a web-based monitoring dashboard — a project that reflects my belief that good engineering is end-to-end.
+          </p>
+          <p>
+            Outside of embedded work, I design and simulate enterprise network topologies in Cisco Packet Tracer, covering routing protocols, VLAN segmentation, and ACL-secured perimeters. I enjoy the challenge of working across the full stack — from circuit traces all the way up to cloud APIs — and I'm always looking for problems worth solving.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="space-y-4 reveal">
+        <div class="glass rounded-xl p-5">
+          <div class="text-2xl font-bold text-white font-mono">3+</div>
+          <div class="text-slate-400 text-sm mt-1">Projects completed</div>
+        </div>
+        <div class="glass rounded-xl p-5">
+          <div class="text-2xl font-bold text-white font-mono">Arduino</div>
+          <div class="text-slate-400 text-sm mt-1">Primary embedded platform</div>
+        </div>
+        <div class="glass rounded-xl p-5">
+          <div class="text-2xl font-bold text-white font-mono">CCNA</div>
+          <div class="text-slate-400 text-sm mt-1">Networking foundation track</div>
+        </div>
+        <div class="glass rounded-xl p-5">
+          <div class="text-2xl font-bold" style="color: #22d3ee; font-family: 'JetBrains Mono',monospace;">IoT + AI</div>
+          <div class="text-slate-400 text-sm mt-1">Current research focus</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section id="skills" class="py-24" style="border-top: 1px solid rgba(34,211,238,0.06);">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal">
+      <span class="section-label">02 // skills</span>
+      <h2 class="text-3xl font-bold text-white mt-3 mb-4">Engineering Stack</h2>
+      <p class="text-slate-400 text-sm mb-12 max-w-xl">Three core domains — hardware, software, and infrastructure — that I work across in research and coursework.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- Hardware & Embedded -->
+      <div class="glass rounded-xl p-6 reveal">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.2);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm">Hardware & Embedded</h3>
+            <p class="text-slate-500 text-xs">Microcontrollers · Sensors · Circuits</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge">Arduino</span>
+          <span class="skill-badge">PID Control</span>
+          <span class="skill-badge">Sensor Arrays</span>
+          <span class="skill-badge">Peltier / TEC</span>
+          <span class="skill-badge">PCB Prototyping</span>
+          <span class="skill-badge">Circuit Design</span>
+          <span class="skill-badge">Multisim</span>
+          <span class="skill-badge">Embedded C</span>
+        </div>
+      </div>
+
+      <!-- Software & Systems -->
+      <div class="glass rounded-xl p-6 reveal">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.2);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm">Software & Systems</h3>
+            <p class="text-slate-500 text-xs">Languages · Web · Frameworks</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge-green">Python</span>
+          <span class="skill-badge-green">JavaScript</span>
+          <span class="skill-badge-green">HTML / CSS</span>
+          <span class="skill-badge-green">Node.js</span>
+          <span class="skill-badge-green">MySQL</span>
+          <span class="skill-badge-green">Git / GitHub</span>
+          <span class="skill-badge-green">REST APIs</span>
+          <span class="skill-badge-green">MQTT / WebSocket</span>
+        </div>
+      </div>
+
+      <!-- Networking & Infrastructure -->
+      <div class="glass rounded-xl p-6 reveal">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.2);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm">Networking & Infrastructure</h3>
+            <p class="text-slate-500 text-xs">Design · Config · Protocols</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge-violet">Cisco Packet Tracer</span>
+          <span class="skill-badge-violet">OSPF / EIGRP</span>
+          <span class="skill-badge-violet">VLAN / Trunking</span>
+          <span class="skill-badge-violet">Inter-VLAN Routing</span>
+          <span class="skill-badge-violet">ACLs</span>
+          <span class="skill-badge-violet">DHCPv4</span>
+          <span class="skill-badge-violet">EtherChannel</span>
+          <span class="skill-badge-violet">TCP/IP Stack</span>
+          <span class="skill-badge-violet">Network Security</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS SECTION -->
+<section id="projects" class="py-24" style="border-top: 1px solid rgba(34,211,238,0.06);">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal">
+      <span class="section-label">03 // projects</span>
+      <h2 class="text-3xl font-bold text-white mt-3 mb-4">Research & Builds</h2>
+      <p class="text-slate-400 text-sm mb-12 max-w-xl">Projects spanning IoT systems and network infrastructure design.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+      <!-- Project 1: FAHRENCOOL -->
+      <div class="project-card rounded-xl overflow-hidden reveal">
+        <div class="h-44 relative flex items-center justify-center" style="background: linear-gradient(135deg, #0f172a 0%, #0c1a2e 50%, #0a1628 100%); border-bottom: 1px solid rgba(34,211,238,0.1);">
+          <svg width="72" height="72" viewBox="0 0 64 64" fill="none" opacity="0.4">
+            <rect x="20" y="8" width="24" height="48" rx="4" stroke="#22d3ee" stroke-width="1.5"/>
+            <path d="M20 24 L8 24 L8 40 L20 40" stroke="#22d3ee" stroke-width="1.5"/>
+            <path d="M44 24 L56 24 L56 40 L44 40" stroke="#22d3ee" stroke-width="1.5"/>
+            <circle cx="32" cy="32" r="6" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="32" y1="16" x2="32" y2="20" stroke="#22d3ee" stroke-width="1.5"/>
+            <line x1="32" y1="44" x2="32" y2="48" stroke="#22d3ee" stroke-width="1.5"/>
+          </svg>
+          <div class="absolute top-3 right-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded-full font-semibold" style="background: rgba(34,211,238,0.15); border: 1px solid rgba(34,211,238,0.3); color: #22d3ee;">Research Prototype</span>
+          </div>
+          <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(34,211,238,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.15) 1px, transparent 1px); background-size: 20px 20px;"></div>
+        </div>
+        <div class="p-5">
+          <h3 class="text-white font-semibold text-base">FAHRENCOOL</h3>
+          <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">IoT-enabled cryotherapy and thermotherapy system using Peltier modules, Arduino, closed-loop water circulation, triple-sensor array, and PID control with web-based monitoring dashboard.</p>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="tech-tag" style="background: rgba(34,211,238,0.1); color: #67e8f9; border: 1px solid rgba(34,211,238,0.2);">Arduino</span>
+            <span class="tech-tag" style="background: rgba(34,211,238,0.1); color: #67e8f9; border: 1px solid rgba(34,211,238,0.2);">Peltier TEC</span>
+            <span class="tech-tag" style="background: rgba(34,211,238,0.1); color: #67e8f9; border: 1px solid rgba(34,211,238,0.2);">PID</span>
+            <span class="tech-tag" style="background: rgba(52,211,153,0.1); color: #6ee7b7; border: 1px solid rgba(52,211,153,0.2);">Node.js</span>
+            <span class="tech-tag" style="background: rgba(52,211,153,0.1); color: #6ee7b7; border: 1px solid rgba(52,211,153,0.2);">MQTT</span>
+          </div>
+          <div class="flex gap-2 mt-5">
+            <a href="https://github.com/NicoleCarbonel" target="_blank" class="flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-all duration-200" style="border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='#e2e8f0'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#94a3b8'">
+              GitHub ↗
+            </a>
+            <a href="#" class="flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-all duration-200" style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.25); color: #22d3ee;" onmouseover="this.style.background='rgba(34,211,238,0.18)'" onmouseout="this.style.background='rgba(34,211,238,0.1)'">
+              Live Demo ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: Network Infrastructure -->
+      <div class="project-card rounded-xl overflow-hidden reveal">
+        <div class="h-44 relative flex items-center justify-center" style="background: linear-gradient(135deg, #0f172a 0%, #130f2a 50%, #100f28 100%); border-bottom: 1px solid rgba(167,139,250,0.1);">
+          <svg width="72" height="72" viewBox="0 0 64 64" fill="none" opacity="0.4">
+            <rect x="24" y="6" width="16" height="10" rx="2" stroke="#a78bfa" stroke-width="1.5"/>
+            <rect x="6" y="40" width="14" height="10" rx="2" stroke="#a78bfa" stroke-width="1.5"/>
+            <rect x="26" y="40" width="12" height="10" rx="2" stroke="#a78bfa" stroke-width="1.5"/>
+            <rect x="44" y="40" width="14" height="10" rx="2" stroke="#a78bfa" stroke-width="1.5"/>
+            <line x1="32" y1="16" x2="32" y2="28" stroke="#a78bfa" stroke-width="1.5"/>
+            <line x1="32" y1="28" x2="13" y2="40" stroke="#a78bfa" stroke-width="1.5"/>
+            <line x1="32" y1="28" x2="32" y2="40" stroke="#a78bfa" stroke-width="1.5"/>
+            <line x1="32" y1="28" x2="51" y2="40" stroke="#a78bfa" stroke-width="1.5"/>
+            <circle cx="32" cy="28" r="3" stroke="#22d3ee" stroke-width="1.5"/>
+          </svg>
+          <div class="absolute top-3 right-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded-full font-semibold" style="background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #a78bfa;">In Progress</span>
+          </div>
+          <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(167,139,250,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(167,139,250,0.15) 1px, transparent 1px); background-size: 20px 20px;"></div>
+        </div>
+        <div class="p-5">
+          <h3 class="text-white font-semibold text-base">Enterprise Network Design</h3>
+          <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Multi-site campus network topology with OSPF/EIGRP routing, inter-VLAN segmentation, EtherChannel redundancy, ACL security policies, and centralized DHCP — designed and simulated in Cisco Packet Tracer.</p>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="tech-tag" style="background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2);">Cisco PT</span>
+            <span class="tech-tag" style="background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2);">OSPF</span>
+            <span class="tech-tag" style="background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2);">VLAN</span>
+            <span class="tech-tag" style="background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2);">ACL</span>
+            <span class="tech-tag" style="background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2);">EtherChannel</span>
+          </div>
+          <div class="flex gap-2 mt-5">
+            <a href="https://github.com/NicoleCarbonel" target="_blank" class="flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-all duration-200" style="border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='#e2e8f0'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#94a3b8'">
+              GitHub ↗
+            </a>
+            <a href="#" class="flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-all duration-200" style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); color: #a78bfa;" onmouseover="this.style.background='rgba(167,139,250,0.18)'" onmouseout="this.style.background='rgba(167,139,250,0.1)'">
+              Live Demo ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="py-24" style="border-top: 1px solid rgba(34,211,238,0.06);">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal">
+      <span class="section-label">04 // contact</span>
+      <h2 class="text-3xl font-bold text-white mt-3 mb-4">Let's Connect</h2>
+      <p class="text-slate-400 text-sm mb-12 max-w-xl">Open to research collaborations, internship opportunities, and interesting engineering problems.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+
+      <!-- Form -->
+      <div class="lg:col-span-3 glass rounded-xl p-8 reveal">
+        <div class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-slate-400 text-xs font-mono block mb-2">name</label>
+              <input type="text" class="form-input" placeholder="Your name">
+            </div>
+            <div>
+              <label class="text-slate-400 text-xs font-mono block mb-2">email</label>
+              <input type="email" class="form-input" placeholder="your@email.com">
+            </div>
+          </div>
+          <div>
+            <label class="text-slate-400 text-xs font-mono block mb-2">subject</label>
+            <input type="text" class="form-input" placeholder="What's this about?">
+          </div>
+          <div>
+            <label class="text-slate-400 text-xs font-mono block mb-2">message</label>
+            <textarea class="form-input resize-none" rows="5" placeholder="Tell me about your project or opportunity..."></textarea>
+          </div>
+          <button onclick="handleSend(this)" class="w-full py-3 rounded-lg text-sm font-semibold transition-all duration-200" style="background: #22d3ee; color: #020617;" onmouseover="this.style.background='#67e8f9'" onmouseout="if(!this.dataset.sent){this.style.background='#22d3ee'}">
+            Send Message →
+          </button>
+        </div>
+      </div>
+
+      <!-- Social links -->
+      <div class="lg:col-span-2 space-y-4 reveal">
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+          Based in Manila, Philippines. Best reached via email or LinkedIn for professional inquiries.
+        </p>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/nicole-de-guzman-carbonel-44b1742a0/" target="_blank" class="glass flex items-center gap-4 rounded-xl p-4 transition-all duration-200 group" style="text-decoration:none;" onmouseover="this.style.borderColor='rgba(34,211,238,0.3)'" onmouseout="this.style.borderColor='rgba(34,211,238,0.12)'">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(10,102,194,0.15); border: 1px solid rgba(10,102,194,0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a66c2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          <div>
+            <div class="text-white text-sm font-medium">LinkedIn</div>
+            <div class="text-slate-500 text-xs">Nicole De Guzman Carbonel</div>
+          </div>
+          <span class="ml-auto text-slate-600 group-hover:text-slate-400 transition-colors text-sm">↗</span>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/NicoleCarbonel" target="_blank" class="glass flex items-center gap-4 rounded-xl p-4 transition-all duration-200 group" style="text-decoration:none;" onmouseover="this.style.borderColor='rgba(34,211,238,0.3)'" onmouseout="this.style.borderColor='rgba(34,211,238,0.12)'">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#e2e8f0"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </div>
+          <div>
+            <div class="text-white text-sm font-medium">GitHub</div>
+            <div class="text-slate-500 text-xs">@NicoleCarbonel</div>
+          </div>
+          <span class="ml-auto text-slate-600 group-hover:text-slate-400 transition-colors text-sm">↗</span>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:carbonel.nicole.deguzman@gmail.com" class="glass flex items-center gap-4 rounded-xl p-4 transition-all duration-200 group" style="text-decoration:none;" onmouseover="this.style.borderColor='rgba(34,211,238,0.3)'" onmouseout="this.style.borderColor='rgba(34,211,238,0.12)'">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="text-white text-sm font-medium">Email</div>
+            <div class="text-slate-500 text-xs font-mono">carbonel.nicole.deguzman@gmail.com</div>
+          </div>
+          <span class="ml-auto text-slate-600 group-hover:text-slate-400 transition-colors text-sm">↗</span>
+        </a>
+
+        <!-- Location note -->
+        <div class="glass rounded-xl p-4 mt-2">
+          <div class="flex items-center gap-2 text-slate-400 text-xs">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/></svg>
+            Manila, Philippines · UTC+8
+          </div>
+          <div class="flex items-center gap-2 text-slate-400 text-xs mt-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+            Available for part-time / internship roles
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-8 text-center" style="border-top: 1px solid rgba(34,211,238,0.06);">
+  <p class="text-slate-600 text-xs font-mono">
+    built by <span style="color: #22d3ee;">Nicole Carbonel</span> · BSCpE · PUP Manila · 2025
+  </p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
